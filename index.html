@@ -3,107 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my valentine? 💋</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <title>Will You Be My Valentine?</title>
     <style>
-        body { font-family: 'Quicksand', sans-serif; }
-        .handwriting { font-family: 'Dancing Script', cursive; }
-        .floating { animation: float 3s ease-in-out infinite; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        body {
+            background-color: #ffc0cb; /* Pink background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .heart-bg {
-            background-color: #ffdae9;
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .cat-img {
+            width: 250px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            color: #6c757d;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 10px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #6c757d;
+            color: white;
+            position: relative;
+        }
+
+        /* Success State */
+        .hidden {
+            display: none;
         }
     </style>
 </head>
-<body class="heart-bg min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <div id="setup-card" class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md text-center border-4 border-pink-100">
-        <h1 class="text-4xl font-bold text-pink-600 mb-2 handwriting">Will you be my valentine 💋😘</h1>
-        <p class="text-pink-400 mb-6">Create your personalized link! 💝</p>
+    <div class="container" id="mainCard">
+        <img src="https://media.tenor.com/ICvKOnv148kAAAAi/milk-and-mocha-hug.gif" alt="Cute Cats" class="cat-img" id="catDisplay">
+        <h1 id="question">Hey <span id="toName">Kanna</span>, will you be my valentine?</h1>
         
-        <div class="space-y-4">
-            <input type="text" id="sender-name" placeholder="Your Name" class="w-full px-4 py-3 rounded-full border-2 border-pink-100 focus:border-pink-400 outline-none transition-all">
-            <input type="text" id="valentine-name" placeholder="Valentine Name" class="w-full px-4 py-3 rounded-full border-2 border-pink-100 focus:border-pink-400 outline-none transition-all">
-            
-            <button onclick="generateLink()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-full shadow-lg transform transition active:scale-95">
-                ✨ Generate Link 😘
-            </button>
+        <div class="btn-container" id="buttonGroup">
+            <button id="yesBtn" onclick="handleYes()">Yes</button>
+            <button id="noBtn" onmouseover="moveNoButton()">No</button>
         </div>
-        <p class="mt-8 text-xs text-pink-300">Created by Prasad</p>
+        
+        <p style="margin-top: 20px; font-size: 12px; color: #aaa;">Created by <span id="createdBy">Prasad</span></p>
     </div>
 
-    <div id="result-card" class="hidden bg-white p-8 rounded-3xl shadow-xl w-full max-w-md text-center border-4 border-pink-100">
-        <div class="text-5xl mb-4">💋✨</div>
-        <h2 class="text-2xl font-bold text-pink-600 mb-4">Link is Ready!</h2>
-        <div class="bg-pink-50 p-3 rounded-lg border border-pink-100 mb-4 break-all text-xs text-pink-700" id="generated-url"></div>
-        <button onclick="copyLink()" class="w-full bg-pink-500 text-white py-2 rounded-full font-bold mb-3">📋 Copy Link 💖</button>
-        <button onclick="location.reload()" class="text-pink-400 text-sm underline">Back</button>
-    </div>
-
-    <div id="proposal-view" class="hidden bg-white p-10 rounded-[40px] shadow-2xl w-full max-w-sm text-center">
-        <div id="content-area">
-            <img id="cat-img" src="https://media.tenor.com/7S_O6U87XvMAAAAi/mochi-peach-cat-kiss.gif" alt="Kissing Cats" class="mx-auto w-48 mb-6">
-            <h1 id="proposal-text" class="text-3xl font-bold text-pink-600 mb-8 px-4"></h1>
-            
-            <div class="flex justify-center items-center gap-4" id="btn-group">
-                <button id="yes-btn" onclick="handleYes()" class="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full text-xl font-bold shadow-lg transition-all">Yes 💋</button>
-                <button id="no-btn" onmouseover="moveNoButton()" onclick="moveNoButton()" class="bg-gray-200 text-gray-600 px-8 py-3 rounded-full text-xl font-bold transition-all">No 😢</button>
-            </div>
-        </div>
-        <p class="mt-12 text-xs text-gray-300">Created by Prasad</p>
+    <div class="container hidden" id="successCard">
+        <img src="https://media.tenor.com/f7S-oUryW68AAAAi/milk-and-mocha.gif" alt="Happy Cats" class="cat-img">
+        <h1 style="color: #ff007f;">Yay! 💖</h1>
+        <p class="message"><span id="fromName">Pedhodu</span> will be so happy!</p>
     </div>
 
     <script>
+        // Extract names from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const to = urlParams.get('to');
-        const from = urlParams.get('from');
+        const from = urlParams.get('from') || 'Someone';
+        const to = urlParams.get('to') || 'Someone';
+        const createdBy = urlParams.get('created_by') || 'Prasad';
 
-        if (to && from) {
-            document.getElementById('setup-card').classList.add('hidden');
-            document.getElementById('proposal-view').classList.remove('hidden');
-            document.getElementById('proposal-text').innerText = `Hey ${to}, will you be my valentine? 💋`;
-        }
+        // Update UI with names
+        document.getElementById('toName').textContent = to;
+        document.getElementById('fromName').textContent = from;
+        document.getElementById('createdBy').textContent = createdBy;
 
-        function generateLink() {
-            const sender = document.getElementById('sender-name').value;
-            const valentine = document.getElementById('valentine-name').value;
-            if(!sender || !valentine) return alert("Please enter both names! 😘");
-
-            const baseUrl = window.location.origin + window.location.pathname;
-            const finalUrl = `${baseUrl}?from=${encodeURIComponent(sender)}&to=${encodeURIComponent(valentine)}`;
-            
-            document.getElementById('setup-card').classList.add('hidden');
-            document.getElementById('result-card').classList.remove('hidden');
-            document.getElementById('generated-url').innerText = finalUrl;
-        }
-
-        function copyLink() {
-            const url = document.getElementById('generated-url').innerText;
-            navigator.clipboard.writeText(url);
-            alert("Link copied! Share it with your Valentine 💋💖");
+        function handleYes() {
+            document.getElementById('mainCard').classList.add('hidden');
+            document.getElementById('successCard').classList.remove('hidden');
         }
 
         function moveNoButton() {
-            const noBtn = document.getElementById('no-btn');
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-        }
-
-        function handleYes() {
-            const area = document.getElementById('content-area');
-            // Heavy Kissing Success GIF
-            area.innerHTML = `
-                <img src="https://media.tenor.com/9T39q72X1oAAAAAi/mochi-peach-cat-mochi-mochi-peach-cat.gif" class="mx-auto w-48 mb-6">
-                <h1 class="text-4xl font-bold text-pink-600 mb-2">Yay! 💋😘💖</h1>
-                <p class="text-gray-500 text-lg">${from} will be so happy! 😘</p>
-            `;
+            const btn = document.getElementById('noBtn');
+            // Move the button to a random position within the window
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
         }
     </script>
 </body>
