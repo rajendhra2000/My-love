@@ -15,6 +15,7 @@
             background-color: #ffe4e1;
             font-family: 'Arial', sans-serif;
             text-align: center;
+            overflow: hidden;
         }
 
         #container {
@@ -24,6 +25,7 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             max-width: 400px;
             width: 90%;
+            z-index: 10;
         }
 
         h1 {
@@ -64,14 +66,21 @@
         #noBtn {
             background-color: #6c757d;
             color: white;
+            position: relative;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="container">
-        <img id="mainGif" class="gif-display" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHJmZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpNwSULPk77/giphy.gif" alt="Cute Bear">
-        
+        <img id="mainGif" class="gif-display" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXJ3eGZ3bmZqZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpNwSULPk77/giphy.gif" alt="Cute Bear">
+       
         <h1 id="question">Will you be my Valentine, Kanna? ❤️</h1>
         <p id="fromTo">From Pedhodu to Kanna</p>
 
@@ -94,28 +103,28 @@
             // Make the No button run away
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
-            noBtn.style.position = 'absolute';
+           
+            noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            // Make the Yes button bigger every time they try to click No
-            yesFontSize += 0.5;
+            // Make the Yes button bigger
+            yesFontSize += 0.4;
             yesBtn.style.fontSize = yesFontSize + 'rem';
-            yesBtn.style.padding = (yesFontSize * 10) + 'px ' + (yesFontSize * 20) + 'px';
+            yesBtn.style.padding = (yesFontSize * 8) + 'px ' + (yesFontSize * 16) + 'px';
         }
 
         function celebrate() {
-            // Change to the Kiss GIF
-            mainGif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2o0bmh6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K5vG7fjkf4Xv2/giphy.gif";
-            
+            // Change to a working Kiss/Celebrate GIF
+            mainGif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZqZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K5vG7fjkf4Xv2/giphy.gif";
+           
             // Update text
             question.innerHTML = "Yay! I love you so much, Kanna! 😘😘❤️";
-            
+           
             // Hide buttons
             btnGroup.style.display = "none";
-            
-            // Optional: Create falling hearts
+           
+            // Start heart shower
             setInterval(createHeart, 300);
         }
 
@@ -125,20 +134,13 @@
             heart.style.position = 'fixed';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.top = '-20px';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
             heart.style.animation = 'fall 3s linear forwards';
+            heart.style.zIndex = '5';
             document.body.appendChild(heart);
-            
+           
             setTimeout(() => heart.remove(), 3000);
         }
     </script>
-
-    <style>
-        @keyframes fall {
-            to {
-                transform: translateY(105vh);
-            }
-        }
-    </style>
 </body>
 </html>
