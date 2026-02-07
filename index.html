@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my valentine?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        .handwriting { font-family: 'Dancing+Script', cursive; }
+        .floating { animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .heart-bg {
+            background-color: #fff5f5;
+            background-image: url("https://www.transparenttextures.com/patterns/heart.png");
+        }
+    </style>
+</head>
+<body class="heart-bg min-h-screen flex items-center justify-center p-4">
+
+    <div id="setup-card" class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-max-w-md text-center border-4 border-pink-200">
+        <h1 class="text-4xl font-bold text-pink-600 mb-2 handwriting">Will you be my valentine</h1>
+        <p class="text-pink-400 mb-6">💝 Valentine Link Generator</p>
+        
+        <div class="space-y-4">
+            <input type="text" id="sender-name" placeholder="Your Name" class="w-full px-4 py-3 rounded-full border-2 border-pink-200 focus:border-pink-500 outline-none transition-all">
+            <input type="text" id="valentine-name" placeholder="Valentine Name" class="w-full px-4 py-3 rounded-full border-2 border-pink-200 focus:border-pink-500 outline-none transition-all">
+            
+            <button onclick="generateLink()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-full shadow-lg transform transition active:scale-95">
+                ✨ Generate Link
+            </button>
+        </div>
+
+        <p class="mt-8 text-xs text-pink-300">Created by Prasad</p>
+    </div>
+
+    <div id="result-card" class="hidden bg-white/90 p-8 rounded-3xl shadow-2xl w-full max-w-md text-center border-4 border-pink-300">
+        <div class="text-5xl mb-4">🎉</div>
+        <h2 class="text-2xl font-bold text-pink-600 mb-4">Your Link is Ready!</h2>
+        <div class="bg-pink-50 p-3 rounded-lg border border-pink-100 mb-4 break-all text-sm text-pink-700" id="generated-url"></div>
+        
+        <div class="flex flex-col gap-3">
+            <button onclick="copyLink()" class="bg-pink-500 text-white py-2 rounded-full font-bold">📋 Copy Link</button>
+            <button onclick="location.reload()" class="text-pink-400 text-sm underline">Create Another Link</button>
+        </div>
+    </div>
+
+    <div id="proposal-view" class="hidden text-center">
+        <img id="cat-img" src="https://media.tenor.com/c_p9B1F_I8sAAAAi/cute-hugging-cats.gif" alt="Cute Cats" class="mx-auto w-64 floating mb-6">
+        <h1 id="proposal-text" class="text-4xl md:text-6xl font-bold text-pink-600 handwriting mb-8 px-4"></h1>
+        
+        <div class="flex flex-wrap justify-center gap-4" id="btn-group">
+            <button id="yes-btn" onclick="handleYes()" class="bg-green-500 hover:bg-green-600 text-white px-10 py-4 rounded-full text-2xl font-bold shadow-xl transition-all">Yes</button>
+            <button id="no-btn" onmouseover="handleNoHover()" onclick="handleNoHover()" class="bg-red-500 text-white px-10 py-4 rounded-full text-2xl font-bold shadow-xl transition-all">No</button>
+        </div>
+        
+        <p id="no-message" class="mt-6 text-pink-500 italic opacity-0 transition-opacity">"No" seems a bit shy 😈</p>
+
+        <p class="mt-20 text-xs text-pink-300">Created by Prasad</p>
+    </div>
+
+    <script>
+        // Check for URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const to = urlParams.get('to');
+        const from = urlParams.get('from');
+
+        if (to && from) {
+            document.getElementById('setup-card').classList.add('hidden');
+            document.getElementById('proposal-view').classList.remove('hidden');
+            document.getElementById('proposal-text').innerText = `Hey ${to}, will you be my valentine?`;
+        }
+
+        function generateLink() {
+            const sender = document.getElementById('sender-name').value;
+            const valentine = document.getElementById('valentine-name').value;
+            
+            if(!sender || !valentine) return alert("Please fill both names!");
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const finalUrl = `${baseUrl}?from=${encodeURIComponent(sender)}&to=${encodeURIComponent(valentine)}`;
+            
+            document.getElementById('setup-card').classList.add('hidden');
+            document.getElementById('result-card').classList.remove('hidden');
+            document.getElementById('generated-url').innerText = finalUrl;
+        }
+
+        function copyLink() {
+            const url = document.getElementById('generated-url').innerText;
+            navigator.clipboard.writeText(url);
+            alert("Link copied to clipboard! ❤️");
+        }
+
+        let noCount = 0;
+        function handleNoHover() {
+            const noBtn = document.getElementById('no-btn');
+            const yesBtn = document.getElementById('yes-btn');
+            const noMsg = document.getElementById('no-message');
+            
+            // Make "Yes" button bigger
+            noCount++;
+            const newSize = 1 + (noCount * 0.2);
+            yesBtn.style.transform = `scale(${newSize})`;
+            
+            // Move "No" button randomly
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            
+            noMsg.style.opacity = '1';
+        }
+
+        function handleYes() {
+            document.getElementById('proposal-view').innerHTML = `
+                <div class="animate-bounce">
+                    <img src="https://media.tenor.com/gU_6963f458AAAAi/cute-hugging-cats.gif" class="mx-auto w-64 mb-6">
+                    <h1 class="text-5xl font-bold text-pink-600 handwriting">Yay! 💖</h1>
+                    <p class="text-xl text-pink-400 mt-4">${from} will be so happy!</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+
