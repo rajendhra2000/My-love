@@ -3,58 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Be My Valentine?</title>
+    <title>For My Kanna</title>
     <style>
         body {
-            background-color: #ffc0cb; /* Pink background */
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffe4e1;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
         }
 
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            text-align: center;
+        #container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             max-width: 400px;
             width: 90%;
         }
 
-        .cat-img {
-            width: 250px;
-            margin-bottom: 20px;
-        }
-
         h1 {
             color: #d63384;
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
         }
 
-        .message {
-            color: #6c757d;
-            font-size: 18px;
-            margin-bottom: 30px;
+        .gif-display {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            object-fit: cover;
         }
 
-        .btn-container {
+        .buttons {
             display: flex;
+            gap: 15px;
             justify-content: center;
-            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
         }
 
         button {
-            padding: 10px 30px;
-            font-size: 18px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
             border: none;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
 
         #yesBtn {
@@ -65,62 +64,81 @@
         #noBtn {
             background-color: #6c757d;
             color: white;
-            position: relative;
-        }
-
-        /* Success State */
-        .hidden {
-            display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="mainCard">
-        <img src="https://media.tenor.com/ICvKOnv148kAAAAi/milk-and-mocha-hug.gif" alt="Cute Cats" class="cat-img" id="catDisplay">
-        <h1 id="question">Hey <span id="toName">Kanna</span>, will you be my valentine?</h1>
+    <div id="container">
+        <img id="mainGif" class="gif-display" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHJmZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpNwSULPk77/giphy.gif" alt="Cute Bear">
         
-        <div class="btn-container" id="buttonGroup">
-            <button id="yesBtn" onclick="handleYes()">Yes</button>
-            <button id="noBtn" onmouseover="moveNoButton()">No</button>
-        </div>
-        
-        <p style="margin-top: 20px; font-size: 12px; color: #aaa;">Created by <span id="createdBy">Prasad</span></p>
-    </div>
+        <h1 id="question">Will you be my Valentine, Kanna? ❤️</h1>
+        <p id="fromTo">From Pedhodu to Kanna</p>
 
-    <div class="container hidden" id="successCard">
-        <img src="https://media.tenor.com/f7S-oUryW68AAAAi/milk-and-mocha.gif" alt="Happy Cats" class="cat-img">
-        <h1 style="color: #ff007f;">Yay! 💖</h1>
-        <p class="message"><span id="fromName">Pedhodu</span> will be so happy!</p>
+        <div class="buttons" id="btnGroup">
+            <button id="yesBtn" onclick="celebrate()">Yes</button>
+            <button id="noBtn" onmouseover="moveButton()">No</button>
+        </div>
     </div>
 
     <script>
-        // Extract names from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const from = urlParams.get('from') || 'Someone';
-        const to = urlParams.get('to') || 'Someone';
-        const createdBy = urlParams.get('created_by') || 'Prasad';
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainGif = document.getElementById('mainGif');
+        const question = document.getElementById('question');
+        const btnGroup = document.getElementById('btnGroup');
 
-        // Update UI with names
-        document.getElementById('toName').textContent = to;
-        document.getElementById('fromName').textContent = from;
-        document.getElementById('createdBy').textContent = createdBy;
+        let yesFontSize = 1.2;
 
-        function handleYes() {
-            document.getElementById('mainCard').classList.add('hidden');
-            document.getElementById('successCard').classList.remove('hidden');
+        function moveButton() {
+            // Make the No button run away
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // Make the Yes button bigger every time they try to click No
+            yesFontSize += 0.5;
+            yesBtn.style.fontSize = yesFontSize + 'rem';
+            yesBtn.style.padding = (yesFontSize * 10) + 'px ' + (yesFontSize * 20) + 'px';
         }
 
-        function moveNoButton() {
-            const btn = document.getElementById('noBtn');
-            // Move the button to a random position within the window
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        function celebrate() {
+            // Change to the Kiss GIF
+            mainGif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2o0bmh6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6ZzR6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K5vG7fjkf4Xv2/giphy.gif";
             
-            btn.style.position = 'absolute';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            // Update text
+            question.innerHTML = "Yay! I love you so much, Kanna! 😘😘❤️";
+            
+            // Hide buttons
+            btnGroup.style.display = "none";
+            
+            // Optional: Create falling hearts
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-20px';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animation = 'fall 3s linear forwards';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
         }
     </script>
+
+    <style>
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+    </style>
 </body>
 </html>
